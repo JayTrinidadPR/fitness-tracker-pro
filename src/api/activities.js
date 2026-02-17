@@ -5,11 +5,26 @@ export async function getActivities() {
   try {
     const response = await fetch(API + "/activities");
     const result = await response.json();
-    return result;
+    if (!response.ok) {
+      throw Error(result.message);
+    }
+    return Array.isArray(result) ? result : [];
   } catch (e) {
     console.error(e);
     return [];
   }
+}
+
+/** Fetches one activity by ID from the API. */
+export async function getActivityById(id) {
+  const response = await fetch(API + "/activities/" + id);
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw Error(result.message);
+  }
+
+  return result;
 }
 
 /**
